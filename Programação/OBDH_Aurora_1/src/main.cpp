@@ -66,5 +66,5 @@ void loop() {
 */
 
   Serial.println("{\"Bateria1\" : ["+String(V_b1)+", "+String(T_b1)+"], \"Bateria2\" : ["+String(V_b2)+", "+String(T_b2)+"]}");
-  delay(5000);
+  delay(1000);
 }
