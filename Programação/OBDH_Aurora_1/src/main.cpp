@@ -18,5 +18,5 @@ void loop() {
 
   Serial.println(postagem);
 
-  delay(1000);
+  delay(10000);
 }
