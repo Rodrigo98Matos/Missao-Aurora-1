@@ -5,6 +5,7 @@
 #include <Wire.h>
 #include <Adafruit_MPU6050.h>
 #include <Adafruit_Sensor.h>
+#include <Adafruit_BMP280.h>
 
 
 
@@ -16,6 +17,7 @@ static const uint32_t GPSBaud = 9600;
 
 TinyGPSPlus gps; // Declara gps como um objeto TinyGPSPlus
 Adafruit_MPU6050 mpu;
+Adafruit_BMP280 bmp;
 
 
 void setup() {
@@ -27,6 +29,14 @@ void setup() {
   mpu.setAccelerometerRange(MPU6050_RANGE_8_G);
   mpu.setGyroRange(MPU6050_RANGE_500_DEG);
   mpu.setFilterBandwidth(MPU6050_BAND_21_HZ);
+
+  unsigned status = bmp.begin(0x76);
+
+   bmp.setSampling(Adafruit_BMP280::MODE_NORMAL,     /* Operating Mode. */
+                  Adafruit_BMP280::SAMPLING_X2,     /* Temp. oversampling */
+                  Adafruit_BMP280::SAMPLING_X16,    /* Pressure oversampling */
+                  Adafruit_BMP280::FILTER_X16,      /* Filtering. */
+                  Adafruit_BMP280::STANDBY_MS_500); /* Standby time. */
 }
 
 void loop() {
@@ -44,13 +54,13 @@ void loop() {
   +"],\"Data\":["+String(gps.date.day())+","+String(gps.date.month())+","+String(gps.date.year())+"],\"Time\":["+String(gps.time.hour()-3)+","
   +String(gps.time.minute())+"],"+"\"Bateria1\" : ["+String(V_b1)+", "+String(T_b1)+"], \"Bateria2\" : ["+String(V_b2)+", "+String(T_b2)+
   "],\"Acelerometro\":["+String(a.acceleration.x)+","+String(a.acceleration.y)+","+String(a.acceleration.z)+"],\"Giroscopio\":["+String(g.gyro.x)+
-  ","+String(g.gyro.y)+","+String(g.gyro.z)+"],\"Temper\":"+String(temp.temperature)+"}";
+  ","+String(g.gyro.y)+","+String(g.gyro.z)+"],\"Temper\":"+String(bmp.readTemperature())+",\"PA\":"+String(bmp.readPressure())+"}";
 
   envia_payload(postagem);
 
   Serial.println(postagem);
 
-  delay(60000);
+  delay(240000);
 }
 
 void smartDelay(unsigned long ms)
