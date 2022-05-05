@@ -1,0 +1,1 @@
+https://kicad.github.io/symbols/MCU_Texas_MSP430
