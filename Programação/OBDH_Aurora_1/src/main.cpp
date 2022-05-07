@@ -6,10 +6,14 @@
 #include <Adafruit_MPU6050.h>
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BMP280.h>
+#include "FS.h"
+#include "SD.h"
+#include "SPI.h"
 
 
 
 void smartDelay(unsigned long ms); //prototipo da função 
+
 
 static const int RXPin = 16, TXPin = 17; //pinos para o GPS
 static const uint32_t GPSBaud = 9600;
@@ -20,8 +24,10 @@ Adafruit_MPU6050 mpu;
 Adafruit_BMP280 bmp;
 
 
+
 void setup() {
   Serial.begin(9600);
+  SD.begin(5);
   Serial1.begin(GPSBaud,SERIAL_8N1,RXPin, TXPin);
 
    
@@ -47,6 +53,7 @@ void loop() {
   double V_b2 = Vin_b2(32, V_b1,5100,3300); //Tensão em Volts da bateria 2
   double T_b2 = ntc_10k(14);                //Temperatura em °C  da bateria 2
 
+
   smartDelay(5000);//Espera 5 segundos para o GPS receber leituras validas
   
 
@@ -56,11 +63,21 @@ void loop() {
   "],\"Acelerometro\":["+String(a.acceleration.x)+","+String(a.acceleration.y)+","+String(a.acceleration.z)+"],\"Giroscopio\":["+String(g.gyro.x)+
   ","+String(g.gyro.y)+","+String(g.gyro.z)+"],\"Temper\":"+String(bmp.readTemperature())+",\"PA\":"+String(bmp.readPressure())+"}";
 
-  envia_payload(postagem);
+  File file = SD.open("/Payload", FILE_APPEND);
+  file.println(postagem);
+  file.close();
+
+
+  //envia_payload(postagem);
 
   Serial.println(postagem);
 
-  delay(240000);
+
+
+
+
+  delay(60000);
+  //delay(240000);
 }
 
 void smartDelay(unsigned long ms)
@@ -72,3 +89,4 @@ void smartDelay(unsigned long ms)
       gps.encode(Serial1.read());
   } while (millis() - start < ms);
 }
+
