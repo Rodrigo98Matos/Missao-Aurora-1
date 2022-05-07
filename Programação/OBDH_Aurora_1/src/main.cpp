@@ -11,6 +11,9 @@
 #include "SPI.h"
 
 
+#define espera 10000
+
+
 
 void smartDelay(unsigned long ms); //prototipo da função 
 
@@ -36,7 +39,7 @@ void setup() {
   mpu.setGyroRange(MPU6050_RANGE_500_DEG);
   mpu.setFilterBandwidth(MPU6050_BAND_21_HZ);
 
-  unsigned status = bmp.begin(0x76);
+  bmp.begin(0x76);
 
    bmp.setSampling(Adafruit_BMP280::MODE_NORMAL,     /* Operating Mode. */
                   Adafruit_BMP280::SAMPLING_X2,     /* Temp. oversampling */
@@ -68,7 +71,7 @@ void loop() {
   file.close();
 
 
-  //envia_payload(postagem);
+  envia_payload(postagem);
 
   Serial.println(postagem);
 
@@ -76,8 +79,8 @@ void loop() {
 
 
 
-  delay(60000);
-  //delay(240000);
+  delay(espera);
+
 }
 
 void smartDelay(unsigned long ms)
