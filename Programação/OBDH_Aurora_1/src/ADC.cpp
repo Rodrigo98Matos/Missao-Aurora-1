@@ -49,10 +49,3 @@ double Vin_div_T(unsigned char pin, double r1, double r2){
 double Vin_b2(unsigned char pin, double b1, double r1, double r2){
   return Vin_div_T(pin,r1,r2)-b1; //tensão/(R1/(R1+R2)) retorna a tensão de entrada do divisor de tensão menos a tensão da primeira bateria
 }
-// double tensao_mv(unsigned char pin){//Tensão em mV
-//   int leitura = analogRead(pin);
-//   return (5000.0*leitura)/1023.00;
-// }
-// double ah49e(unsigned char pin){//Sensor de efeito Hall 49e
-//   return (tensao_mv(pin)-2500)/17; //retorna a leitura do sensor em mT
-// }
