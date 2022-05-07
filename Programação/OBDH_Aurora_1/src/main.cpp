@@ -31,7 +31,7 @@ void setup() {
   Serial1.begin(GPSBaud,SERIAL_8N1,RXPin, TXPin);
 
    
-  smartDelay(30000); //Espera um minuto para o GPS receber leituras validas
+  
   mpu.setAccelerometerRange(MPU6050_RANGE_8_G);
   mpu.setGyroRange(MPU6050_RANGE_500_DEG);
   mpu.setFilterBandwidth(MPU6050_BAND_21_HZ);
@@ -53,7 +53,7 @@ void loop() {
   double V_b2 = Vin_b2(32, V_b1,5100,3300); //Tensão em Volts da bateria 2
   double T_b2 = ntc_10k(14);                //Temperatura em °C  da bateria 2
 
-  smartDelay(5000);
+  smartDelay(5000);//Espera 5 minutos para o GPS receber leituras validas
   
 
   String postagem = "{\"equipe\":1,\"GPS\":["+String(gps.location.lat(),6)+","+String(gps.location.lng(),6)+","+String(gps.altitude.meters())
