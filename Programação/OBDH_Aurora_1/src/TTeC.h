@@ -7,7 +7,7 @@
 
 
 
-#define SERVER_IP "200.137.130.88:8888"
+#define SERVER_IP "http://200.137.130.88:8888/"
 
 //#ifndef STASSID
 #define STASSID "ALBERTO E ROSELIA"

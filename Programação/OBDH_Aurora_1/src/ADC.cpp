@@ -16,6 +16,11 @@ double tensao(unsigned char pin){      //retorna a tensão em Volts lido na port
   return (3.3*leitura)/4095.00;
 }
 
+double porcento(unsigned char pin){      //retorna a tensão em Volts lido na porta analógica 
+  int leitura = analogRead(pin);
+  return (100*leitura)/4095.00;
+}
+
 double R1(unsigned char pin){       //Em um divisor de tensão com 10000 Ohm no resistor superior, retorna o valor ohmico
   double Vadc = tensao(pin);
   return ((10000*3.3)-(Vadc*10000))/Vadc;

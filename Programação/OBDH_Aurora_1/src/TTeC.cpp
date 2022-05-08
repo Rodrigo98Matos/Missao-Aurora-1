@@ -2,9 +2,9 @@
 
 void envia_payload(String postagem){
 WiFi.begin(STASSID, STAPSK);
-
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
+int cont = 0;
+  while (WiFi.status() != WL_CONNECTED && cont<120) {//se não conectar depois de 1 minuto, desiste de conectar
+    delay(500);cont++;
     Serial.print(".");
   }
   Serial.println("");
@@ -16,7 +16,7 @@ WiFi.begin(STASSID, STAPSK);
     HTTPClient http;
     Serial.print("[HTTP] begin...\n");
     // configure traged server and url
-    http.begin(client,"http://200.137.130.88:8888/"); //HTTP
+    http.begin(client,SERVER_IP); //HTTP
     http.addHeader("Content-Type", "application/json");
 
     Serial.print("[HTTP] POST...\n");
