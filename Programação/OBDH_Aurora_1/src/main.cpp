@@ -1,3 +1,9 @@
+/*
+ * OBDH_Aurora_1
+ * main.cpp
+ * Created: 12/02/2022 22:25:26
+ * Author : Rodrigo Matos
+ */ 
 #include <Arduino.h>
 #include "ADC.h"
 #include "TTeC.h"

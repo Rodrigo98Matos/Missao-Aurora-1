@@ -1,3 +1,9 @@
+/*
+ * ADC.c
+ *
+ * Created: 12/03/2022 14:35:26
+ * Author : Rodrigo Matos
+ */ 
 #ifndef ADC_H_
 #define ADC_H_
 

@@ -1,6 +1,12 @@
+/*
+ * OBDH_Aurora_1
+ * TTeC.cpp
+ * Created: 12/02/2022 22:25:26
+ * Author : Rodrigo Matos
+ */ 
 #include "TTeC.h"
 
-void envia_payload(String postagem){
+void envia_payload(String postagem){//Envia uma string ao servidor 
 WiFi.begin(STASSID, STAPSK);
 int cont = 0;
   while (WiFi.status() != WL_CONNECTED && cont<120) {//se não conectar depois de 1 minuto, desiste de conectar

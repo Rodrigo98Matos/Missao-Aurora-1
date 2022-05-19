@@ -8,9 +8,6 @@
 #include "ADC.h"
 
 
-/* Replace with your library code */
-
-
 double tensao(unsigned char pin){      //retorna a tensão em Volts lido na porta analógica 
   int leitura = analogRead(pin);
   return (3.3*leitura)/4095.00;
