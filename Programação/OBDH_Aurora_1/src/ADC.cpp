@@ -3,31 +3,24 @@
  *
  * Created: 12/03/2022 14:35:26
  * Author : Rodrigo Matos
- */ 
-
+ */  
 #include "ADC.h"
-
-
 double tensao(unsigned char pin){      //retorna a tensão em Volts lido na porta analógica 
   int leitura = analogRead(pin);
   return (3.3*leitura)/4095.00;
 }
-
 double porcento(unsigned char pin){      //retorna a tensão em Volts lido na porta analógica 
   int leitura = analogRead(pin);
   return (100*leitura)/4095.00;
 }
-
 double R1(unsigned char pin){       //Em um divisor de tensão com 10000 Ohm no resistor superior, retorna o valor ohmico
   double Vadc = tensao(pin);
   return ((10000*3.3)-(Vadc*10000))/Vadc;
 }
-
 double R2(unsigned char pin){       //Em um divisor de tensão com 10000 Ohm no resistor superior, retorna o valor ohmico
   double Vadc = tensao(pin);
   return Vadc * (10000/(3.3-Vadc));
 }
-
 double ntc_10k(unsigned char pin){
   double  Rd0 = 10000.0,                      //Resistencia do NTC a 25°C
       T0 = 298.15,                            //25°C em Kelvin
