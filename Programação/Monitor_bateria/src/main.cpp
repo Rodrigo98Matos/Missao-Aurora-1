@@ -4,6 +4,12 @@
 #include "SD.h"
 #include "SPI.h"
 #include <TinyGPSPlus.h>
+#include <driver/adc.h>
+#include <esp_adc_cal.h>
+#include <freertos/FreeRTOS.h>
+#include <freertos/task.h>
+#include <esp_err.h>
+#include <esp_log.h>
 
 
 #define tempo 60000
@@ -13,11 +19,15 @@
 #if !defined(CONFIG_BT_ENABLED) || !defined(CONFIG_BLUEDROID_ENABLED)
 #error Bluetooth is not enabled! Please run `make menuconfig` to and enable it
 #endif
-/// prototipos de funções 
-double tensao(unsigned char);
-double Vin_div_T(unsigned char pin,double r1,double r2);
-void smartDelay(unsigned long ms);
 
+uint32_t tensao(adc_unit_t ADC,unsigned char pin);
+double Vin_div_T(adc_unit_t ADC,unsigned char pin, double r1, double r2);
+
+/// prototipos de funções 
+uint32_t tensao(adc_unit_t ADC,unsigned char pin);
+double Vin_div_T(adc_unit_t ADC,unsigned char pin, double r1, double r2);
+void smartDelay(unsigned long ms);
+int baixo = 0;
 BluetoothSerial SerialBT;
 TinyGPSPlus gps; // Declara gps como um objeto TinyGPSPlus
 static const int RXPin = 16, TXPin = 17; //pinos para o GPS
@@ -35,34 +45,49 @@ void setup() {
 void loop() {
   int inicio=millis();
   String payload;
-  double V_b = Vin_div_T(33,200,680);    //Tensão em Volts da bateria
+  double V_b = Vin_div_T(ADC_UNIT_1,36,200,680);    //Tensão em Volts da bateria
 
   smartDelay(5000);//Espera 5 segundos para o GPS receber leituras validas
 
-  payload = "["+String(gps.date.day())+"/"+String(gps.date.month())+"/"+String(gps.date.year())+"]"+"["+String(gps.time.hour())+":"+String(gps.time.minute())+"]    "+String(V_b)+"V";
+  payload = "["+String(gps.date.day())+"/"+String(gps.date.month())+"/"+String(gps.date.year())+"]"+"["+String(gps.time.hour())+":"+String(gps.time.minute())+"]    "+String(V_b)+"mV";
 
-  File esperimento = SD.open("/Monitor_Bateria_Motor_DC.txt", FILE_APPEND);
+  File esperimento = SD.open("/Monitor_Bateria_Motor_DC1.txt", FILE_APPEND);
   esperimento.println(payload);
   esperimento.close();
 
   SerialBT.println(payload);
   Serial.println(payload);
-  if(V_b<=3.00){
-    digitalWrite(motor,1);
-    while(1);
-  }else{
-    digitalWrite(motor,0);
-  }
+  // if(V_b<=3.00){
+  //   baixo++;
+  // }else{
+  //   digitalWrite(motor,0);
+  // }
+  // if (baixo>=3){
+  //   digitalWrite(motor,1);
+  //   while(1);
+  // }
   while ((millis()-inicio)!=tempo);
 }
 
-double tensao(unsigned char pin){      //retorna a tensão em Volts lido na porta analógica 
-  int leitura = analogRead(pin);
-  return (3.300*leitura)/4095.000;
-}
+uint32_t tensao(adc_unit_t ADC,unsigned char pin){      // ADC_UNIT_1   ou   ADC_UNIT_2
+  esp_adc_cal_characteristics_t adc_cal;//Estrutura que contem as informacoes para calibracao
 
-double Vin_div_T(unsigned char pin, double r1, double r2){
-  double tens = tensao(pin);
+  esp_adc_cal_characterize(ADC, ADC_ATTEN_DB_11, ADC_WIDTH_BIT_12, 1100, &adc_cal);//Inicializa a estrutura de calibracao
+
+  uint32_t voltage = 0;
+		for (int i = 0; i < 100; i++)
+		{
+			voltage += analogRead(pin);//Obtem o valor RAW do ADC
+			ets_delay_us(30);
+		}
+		voltage /= 100;
+
+
+		voltage = esp_adc_cal_raw_to_voltage(voltage, &adc_cal);//Converte e calibra o valor lido (RAW) para mV
+  return voltage;
+}
+double Vin_div_T(adc_unit_t ADC,unsigned char pin, double r1, double r2){
+  uint32_t tens = tensao(ADC,pin);
   double res = (r2/(r1+r2));
   return (tens/res); //tensão/(R2/(R1+R2)) retorna a tensão de entrada do divisor de tensão
 }
