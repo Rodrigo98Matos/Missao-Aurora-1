@@ -16,8 +16,8 @@
 #define SERVER_IP "http://200.137.130.88:8888/"//link para submissão ao servidor 
 
 //#ifndef STASSID
-#define STASSID "ALBERTO E ROSELIA" //ID do WiFi
-#define STAPSK  "CHAMEX5050"        //Senha do WiFi
+#define STASSID "aldebaran" //ID do WiFi
+#define STAPSK  "20220621"        //Senha do WiFi
 //#endif
 void envia_payload(String postagem); //Prototipo da funsção
 #endif //TTeC_H_

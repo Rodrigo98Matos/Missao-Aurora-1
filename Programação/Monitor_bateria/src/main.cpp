@@ -14,6 +14,7 @@
 
 #define tempo 60000
 #define motor 25
+#define MENOR_TENSAO 3000
 
 
 #if !defined(CONFIG_BT_ENABLED) || !defined(CONFIG_BLUEDROID_ENABLED)
@@ -57,15 +58,15 @@ void loop() {
 
   SerialBT.println(payload);
   Serial.println(payload);
-  // if(V_b<=3.00){
-  //   baixo++;
-  // }else{
-  //   digitalWrite(motor,0);
-  // }
-  // if (baixo>=3){
-  //   digitalWrite(motor,1);
-  //   while(1);
-  // }
+  if(V_b<=MENOR_TENSAO){
+    baixo++;
+  }else{
+    digitalWrite(motor,0);
+  }
+  if (baixo>=MENOR_TENSAO){
+    digitalWrite(motor,1);
+    while(1);
+  }
   while ((millis()-inicio)!=tempo);
 }
 
