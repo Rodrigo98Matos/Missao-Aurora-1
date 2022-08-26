@@ -1,62 +1,76 @@
 #include <Arduino.h>
-#include "BluetoothSerial.h"
 #include "FS.h"
 #include "SD.h"
 #include "SPI.h"
-#include <TinyGPSPlus.h>
 #include <driver/adc.h>
 #include <esp_adc_cal.h>
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
 #include <esp_err.h>
 #include <esp_log.h>
+#include <WiFi.h>
+#include <NTPClient.h>
+#include <WiFiUdp.h>
 
 
 #define tempo 60000
 #define motor 25
 #define MENOR_TENSAO 3000
 
+//#ifndef STASSID
+#define STASSID "ALBERTO E ROSELIA" //ID do WiFi
+#define STAPSK  "CHAMEX5050"        //Senha do WiFi
 
-#if !defined(CONFIG_BT_ENABLED) || !defined(CONFIG_BLUEDROID_ENABLED)
-#error Bluetooth is not enabled! Please run `make menuconfig` to and enable it
-#endif
+WiFiUDP ntpUDP;
 
-uint32_t tensao(adc_unit_t ADC,unsigned char pin);
-double Vin_div_T(adc_unit_t ADC,unsigned char pin, double r1, double r2);
+NTPClient timeClient(ntpUDP, "br.pool.ntp.org", -3*3600, 60000);
+
 
 /// prototipos de funções 
 uint32_t tensao(adc_unit_t ADC,unsigned char pin);
 double Vin_div_T(adc_unit_t ADC,unsigned char pin, double r1, double r2);
-void smartDelay(unsigned long ms);
 int baixo = 0;
-BluetoothSerial SerialBT;
-TinyGPSPlus gps; // Declara gps como um objeto TinyGPSPlus
-static const int RXPin = 16, TXPin = 17; //pinos para o GPS
-static const uint32_t GPSBaud = 9600;
 
 void setup() {
-  // put your setup code here, to run once:
   Serial.begin(115200);
   SD.begin(5);
-  Serial1.begin(GPSBaud,SERIAL_8N1,RXPin, TXPin);
-  SerialBT.begin("Aurora-1"); //Bluetooth device name
   pinMode(motor,OUTPUT);
+  pinMode(2,OUTPUT);
+
 }
 
 void loop() {
   int inicio=millis();
+  digitalWrite(2,1);
   String payload;
   double V_b = Vin_div_T(ADC_UNIT_1,36,200,680);    //Tensão em Volts da bateria
 
-  smartDelay(5000);//Espera 5 segundos para o GPS receber leituras validas
+  //Liga WiFi
+  WiFi.begin(STASSID, STAPSK);
+  int cont = 0;
+  while (WiFi.status() != WL_CONNECTED && cont<120) {//se não conectar depois de 1 minuto, desiste de conectar
+    delay(500);cont++;
+    Serial.print(".");
+  }
 
-  payload = "["+String(gps.date.day())+"/"+String(gps.date.month())+"/"+String(gps.date.year())+"]"+"["+String(gps.time.hour())+":"+String(gps.time.minute())+"]    "+String(V_b)+"mV";
+  timeClient.begin();
+  timeClient.update();
 
-  File esperimento = SD.open("/Monitor_Bateria_Motor_DC1.txt", FILE_APPEND);
+  String tempontp = String(timeClient.getFormattedTime());
+ 
+
+  //Desliga WiFi
+  WiFi.disconnect(true);
+  WiFi.mode(WIFI_OFF);
+ 
+  payload = "["+tempontp+"]    "+String(V_b)+"mV";
+
+
+  File esperimento = SD.open("/Monitor_Bateria_Motor_DC11.txt", FILE_APPEND);
   esperimento.println(payload);
   esperimento.close();
 
-  SerialBT.println(payload);
+
   Serial.println(payload);
   if(V_b<=MENOR_TENSAO){
     baixo++;
@@ -67,6 +81,7 @@ void loop() {
     digitalWrite(motor,1);
     while(1);
   }
+  digitalWrite(2,0);
   while ((millis()-inicio)!=tempo);
 }
 
@@ -92,14 +107,3 @@ double Vin_div_T(adc_unit_t ADC,unsigned char pin, double r1, double r2){
   double res = (r2/(r1+r2));
   return (tens/res); //tensão/(R2/(R1+R2)) retorna a tensão de entrada do divisor de tensão
 }
-
-void smartDelay(unsigned long ms)
-{
-  unsigned long start = millis();
-  do 
-  {
-    while (Serial1.available())
-      gps.encode(Serial1.read());
-  } while (millis() - start < ms);
-}
-
