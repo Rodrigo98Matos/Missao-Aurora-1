@@ -37,7 +37,7 @@ void loop() {
   }else{
     digitalWrite(motor,0);
   }
-  if (baixo>=MENOR_TENSAO){
+  if (baixo>=10){
     digitalWrite(motor,1);
     while(1);
   }
