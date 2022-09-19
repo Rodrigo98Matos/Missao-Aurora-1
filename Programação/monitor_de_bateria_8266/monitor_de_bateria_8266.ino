@@ -27,7 +27,7 @@ void loop() {
   double V_b = Vin_div_T(A0,200,680);    //Tensão em Volts da bateria
 
 
-  payload = "{\"equipe\":"+String(8266)+",\"bat\":\""+String(V_b)+"mV\"}";
+  payload = "{\"equipe\":"+String(82662)+",\"bat\":\""+String(V_b)+"mV\"}";
 
   envia_payload(payload);
 
