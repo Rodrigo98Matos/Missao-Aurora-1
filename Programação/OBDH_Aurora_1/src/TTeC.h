@@ -17,7 +17,12 @@
 
 //#ifndef STASSID
 #define STASSID "aldebaran" //ID do WiFi
-#define STAPSK  "20220621"        //Senha do WiFi
+#define STAPSK  "21062021"        //Senha do WiFi
+/*
+//#ifndef STASSID
+#define STASSID "AndroidAP498E" //ID do WiFi
+#define STAPSK  "dkxt9050"        //Senha do WiFi
+*/
 //#endif
 void envia_payload(String postagem); //Prototipo da funsção
 #endif //TTeC_H_
