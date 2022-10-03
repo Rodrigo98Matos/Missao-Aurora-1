@@ -16,15 +16,15 @@
 #include <esp_log.h>
 
 
-uint32_t tensao(adc_unit_t ADC,unsigned char pin);
+float tensao(adc_unit_t ADC,unsigned char pin);
 double Vin_div_T(adc_unit_t ADC,unsigned char pin, double r1, double r2);
 //double tensao(unsigned char);
-double R1(unsigned char);
-double R2(unsigned char);
-double ntc_10k(unsigned char);
+double R1(adc_unit_t ADC,unsigned char);
+double R2(adc_unit_t ADC,unsigned char);
+double ntc_10k(adc_unit_t ADC,unsigned char);
 //double Vin_div_T(unsigned char pin,double r1,double r2);
 double Vin_b2(adc_unit_t ADC,unsigned char pin, double b1, double r1, double r2);
-double porcento(adc_unit_t ADC,unsigned char pin);
+double porcento(unsigned char pin);
 
 
 

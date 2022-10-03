@@ -11,7 +11,7 @@ float tensao(adc_unit_t ADC,unsigned char pin){      // ADC_UNIT_1   ou   ADC_UN
 
   esp_adc_cal_characterize(ADC, ADC_ATTEN_DB_11, ADC_WIDTH_BIT_12, 1100, &adc_cal);//Inicializa a estrutura de calibracao
 
-  inteiro voltage = 0;
+  int voltage = 0;
 		for (int i = 0; i < 100; i++)
 		{
 			voltage += analogRead(pin);//Obtem o valor RAW do ADC
@@ -34,8 +34,8 @@ double Vin_div_T(adc_unit_t ADC,unsigned char pin, double r1, double r2){
   int leitura = analogRead(pin);
   return (3.3*leitura)/4095.00;
 }*/
-double porcento(adc_unit_t ADC,unsigned char pin){      //retorna a tensão em Volts lido na porta analógica 
-  int leitura = analogRead(ADC,pin);
+double porcento(unsigned char pin){      //retorna a tensão em Volts lido na porta analógica 
+  int leitura = analogRead(pin);
   return (100*leitura)/4095.00;
 }
 double R1(adc_unit_t ADC,unsigned char pin){       //Em um divisor de tensão com 10000 Ohm no resistor superior, retorna o valor ohmico

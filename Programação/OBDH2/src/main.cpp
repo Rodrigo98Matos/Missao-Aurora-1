@@ -75,7 +75,7 @@ void loop() {
   double T_b1 = ntc_10k(ADC_UNIT_2,12);                //Temperatura em °C  da bateria 1
   double V_b2 = Vin_b2(ADC_UNIT_1,32, V_b1,5100,3300); //Tensão em Volts da bateria 2
   double T_b2 = ntc_10k(ADC_UNIT_2,14);                //Temperatura em °C  da bateria 2
-  double V_bat =  porcento(ADC_UNIT_2,27);    //porcentagem das baterias, com o Vin maximo de 8.2V e um divisor de tensão com R1 = 5100 e R2 = 3300, o Vout maxico será de 3.3V, tornando os calculos mais simples 
+  double V_bat =  porcento(27);    //porcentagem das baterias, com o Vin maximo de 8.2V e um divisor de tensão com R1 = 5100 e R2 = 3300, o Vout maxico será de 3.3V, tornando os calculos mais simples 
 
 
   smartDelay(5000);//Espera 5 segundos para o GPS receber leituras validas
@@ -100,11 +100,11 @@ void loop() {
   esperimento.close();
 
 
-  //envia_payload(postagem);
+  envia_payload(postagem);
 
   
-  //Serial.println(save);
-  Serial.println(analogRead(14))
+  Serial.println(save);
+  
 
 
 
