@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name" translatable="false">Aurora-1</string>
+    <string name="autor" translatable="false">Rodrigo Matos</string>
+    <string name="cubesat" translatable="false">Aurora-1</string>
+    <string name="v_b" translatable="false">Bateria</string>
+    <string name="atm" translatable="false">Pressão ATM</string>
+    <string name="temp" translatable="false">Temperatura</string>
+    <string name="payload" translatable="false">Payload</string>
+    <string name="beacons" translatable="false">Beacons</string>
+    <string name="gps" translatable="false">GPS</string>
+    <string name="mag" translatable="false">Magnetômetro</string>
+    <string name="ace" translatable="false">Acelerômetro</string>
+    <string name="title_activity_dados">dados</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+</resources>
