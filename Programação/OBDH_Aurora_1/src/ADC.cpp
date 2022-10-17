@@ -6,12 +6,12 @@
  */  
 #include "ADC.h"
 
-float tensao(adc_unit_t ADC,unsigned char pin){      // ADC_UNIT_1   ou   ADC_UNIT_2
+float tensao(adc_unit_t ADC,uint8_t pin){      // ADC_UNIT_1   ou   ADC_UNIT_2
   esp_adc_cal_characteristics_t adc_cal;//Estrutura que contem as informacoes para calibracao
 
   esp_adc_cal_characterize(ADC, ADC_ATTEN_DB_11, ADC_WIDTH_BIT_12, 1100, &adc_cal);//Inicializa a estrutura de calibracao
 
-  inteiro voltage = 0;
+  int voltage = 0;
 		for (int i = 0; i < 100; i++)
 		{
 			voltage += analogRead(pin);//Obtem o valor RAW do ADC
@@ -34,19 +34,19 @@ double Vin_div_T(adc_unit_t ADC,unsigned char pin, double r1, double r2){
   int leitura = analogRead(pin);
   return (3.3*leitura)/4095.00;
 }*/
-double porcento(adc_unit_t ADC,unsigned char pin){      //retorna a tensão em Volts lido na porta analógica 
-  int leitura = analogRead(ADC,pin);
+double porcento(uint8_t pin){      //retorna a tensão em Volts lido na porta analógica 
+  int leitura = analogRead(pin);
   return (100*leitura)/4095.00;
 }
-double R1(adc_unit_t ADC,unsigned char pin){       //Em um divisor de tensão com 10000 Ohm no resistor superior, retorna o valor ohmico
+double R1(adc_unit_t ADC,uint8_t pin){       //Em um divisor de tensão com 10000 Ohm no resistor superior, retorna o valor ohmico
   double Vadc = tensao(ADC,pin);
   return ((10000*3.3)-(Vadc*10000))/Vadc;
 }
-double R2(adc_unit_t ADC,unsigned char pin){       //Em um divisor de tensão com 10000 Ohm no resistor superior, retorna o valor ohmico
+double R2(adc_unit_t ADC,uint8_t pin){       //Em um divisor de tensão com 10000 Ohm no resistor superior, retorna o valor ohmico
   double Vadc = tensao(ADC,pin);
   return Vadc * (10000/(3.3-Vadc));
 }
-double ntc_10k(adc_unit_t ADC,unsigned char pin){
+double ntc_10k(adc_unit_t ADC,uint8_t pin){
   double  Rd0 = 10000.0,                      //Resistencia do NTC a 25°C
       T0 = 298.15,                            //25°C em Kelvin
       T1 = 273.15,                            //Temperatura de referência 1
@@ -66,6 +66,6 @@ double ntc_10k(adc_unit_t ADC,unsigned char pin){
   double res = (r2/(r1+r2));
   return (tens/res); //tensão/(R2/(R1+R2)) retorna a tensão de entrada do divisor de tensão
 }*/
-double Vin_b2(adc_unit_t ADC,unsigned char pin, double b1, double r1, double r2){
+double Vin_b2(adc_unit_t ADC,uint8_t pin, double b1, double r1, double r2){
   return Vin_div_T(ADC,pin,r1,r2)-b1; //tensão/(R1/(R1+R2)) retorna a tensão de entrada do divisor de tensão menos a tensão da primeira bateria
 }
