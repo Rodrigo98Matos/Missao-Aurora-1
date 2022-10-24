@@ -68,7 +68,7 @@ void loop() {
   String save = "{\"Ace\": {\"X\":"+String(a.acceleration.x)+",\"Y\":"+String(a.acceleration.y)+",\"Z\":"+String(a.acceleration.z)+"},\"Batteries\": {\"B1\":{\"V\":"+String(V_b1)+",\"T\":"+String(T_b1)+"},\"B2\":{\"V\":"
   +String(V_b2)+",\"T\":"+String(T_b2)+"}},\"GPS\": {\"LAT\":"+String(gps.location.lat(),6)+",\"LNG\":"+String(gps.location.lng(),6)+",\"ALT\":"+String(gps.altitude.meters())+"},\"Gir\": {\"X\":"
   +String(g.gyro.x)+",\"Y\":"+String(g.gyro.y)+",\"Z\":"+String(a.acceleration.z)+"},\"PA\": "+String(bmp.readPressure())+",\"Payload\": "+String(intensidade(magx, magy, magz))+",\"Temp\": "
-  +String(bmp.readTemperature())+",\"Time\": {\"DAY\":"+String(gps.date.day())+",\"MOU\":"+String(gps.date.month())+",\"YEA\":"+String(gps.date.year())+",\"HOU\":"+String(gps.time.hour())+",\"MIN\":"+String(gps.time.minute())+",\"SEC\":"+String(gps.time.second())+"},\"equipe\": "+String(equipe)+",\"mag\": {\"X\":"
+  +String(bmp.readTemperature())+",\"Time\": {\"DAY\":"+String(gps.date.day())+",\"MOU\":"+String(gps.date.month())+",\"YEA\":"+String(gps.date.year())+",\"HOU\":"+String(gps.time.hour())+",\"MIN\":"+String(gps.time.minute())+",\"SEC\":"+String(gps.time.second())+"},\"equipe\": "+String(equipe)+",\"Mag\": {\"X\":"
   +String(magx/escala_gaus)+",\"Y\":"+String(magy/escala_gaus)+",\"Z\":"+String(magz/escala_gaus)+"}}";
 
   File file = SD.open("/Payload"+String(gps.date.month())+String(gps.date.year())+".txt", FILE_APPEND);
