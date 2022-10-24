@@ -95,9 +95,6 @@ void loop() {
   file.println(save);
   file.close();
 
-  File esperimento = SD.open("/Bateria com isolamento termico.txt", FILE_APPEND);
-  esperimento.println(String(gps.time.hour())+":"+String(gps.time.minute())+"\t"+String(V_bat));
-  esperimento.close();
 
 
   envia_payload(postagem);

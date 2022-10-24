@@ -13,11 +13,16 @@
 
 
 
-#define SERVER_IP "http://200.137.130.88:8888/"//link para submissão ao servidor 
-
+//#define SERVER_IP "http://200.137.130.88:8888/"//link para submissão ao servidor 
+#define SERVER_IP "http://200.137.132.201:8080"//link para submissão ao servidor 
+/*
 //#ifndef STASSID
 #define STASSID "aldebaran" //ID do WiFi
 #define STAPSK  "21062021"        //Senha do WiFi
+*/
+//#ifndef STASSID
+#define STASSID "ALBERTO E ROSELIA" //ID do WiFi
+#define STAPSK  "CHAMEX5050"        //Senha do WiFi
 /*
 //#ifndef STASSID
 #define STASSID "AndroidAP498E" //ID do WiFi
